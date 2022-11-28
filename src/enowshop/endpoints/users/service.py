@@ -42,7 +42,7 @@ class UsersService:
         keycloak_uuid = await self.keycloak_service.create_user_by_admin_cli(data=user_data, password=password,
                                                                              user_id=user.id)
 
-        await self.users_repo.update(pk=user.id, values={'keycloak': keycloak_uuid})
+        await self.users_repo.update(pk=user.id, values={'keycloak_uuid': keycloak_uuid})
 
     async def login(self, login_data: LoginSchema) -> Dict:
         response = await self.keycloak_service.auth_user(username=login_data.username,

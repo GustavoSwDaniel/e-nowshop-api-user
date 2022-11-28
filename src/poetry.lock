@@ -123,7 +123,7 @@ aiohttp = ["aiohttp"]
 
 [[package]]
 name = "e-nowshop-models"
-version = "0.2.5"
+version = "0.2.19"
 description = ""
 category = "main"
 optional = false
