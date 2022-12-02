@@ -35,6 +35,16 @@ class UsersRepository(SqlRepository):
             await session.execute(update(self.model).where(self.model.email == email).values(**values))
             await session.commit()
 
+    async def get_user_info_by_email(self, params) -> Users:
+        async with self.session_factory() as session:
+            result = await session.execute(select(self.model).filter_by(**params))
+            result = result.scalars().first()
+
+        if not result:
+            raise RepositoryException('Email not already registered')
+
+        return result
+
 
 class UserAddressRepository(SqlRepository):
     model = UserAddress

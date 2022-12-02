@@ -47,6 +47,14 @@ class UsersService:
     async def login(self, login_data: LoginSchema) -> Dict:
         response = await self.keycloak_service.auth_user(username=login_data.username,
                                                          password=login_data.password)
+
+        user_data = await self.users_repo.get_user_info_by_email(params={'email': login_data.username})
+
+        response['name'] = user_data.name
+        response['last_name'] = user_data.last_name
+        response['email'] = user_data.email
+        response['uuid'] = user_data.uuid
+
         return response
 
     async def get_user_info(self, email: str) -> Users:

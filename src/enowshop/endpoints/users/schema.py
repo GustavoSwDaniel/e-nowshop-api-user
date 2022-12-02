@@ -17,6 +17,10 @@ class LoginResponseSchema(BaseModel):
     expires_in: int
     refresh_token: str
     refresh_expires_in: str
+    name: str
+    last_name: str
+    email: str
+    uuid: str
 
 
 class PhoneTypes(Enum):
