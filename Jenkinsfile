@@ -19,7 +19,7 @@ pipeline {
         stage ('Publish to GCR') {
             steps {
                 script {
-                    withDockerRegistry([credentialsId: 'enowhop', url: 'https://gcr.io']) {
+                    withDockerRegistry([credentialsId: 'test', url: 'https://gcr.io']) {
                         docker.image("${REGISTRY_URL}/${IMAGE_NAME}:${TAG_NAME}").push()
                     }
                 }
