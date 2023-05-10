@@ -18,11 +18,12 @@ pipeline {
 
         stage ('Push image'){
             steps {
-                withCredentials([googleServiceAccount(credentialsId: 'container-registry', project:'enowhop')]
-                script {
-                    docker.withRegistry("${REGISTRY_URL}", 'gcr'){
-                        def image = docker.build("${REGISTRY_URL}/${IMAGE_NAME}:${TAG_NAME}")
-                        image.push()
+                withCredentials([googleServiceAccount(credentialsId: 'container-registry', project:'enowhop')]{
+                    script {
+                        docker.withRegistry("${REGISTRY_URL}", 'gcr'){
+                            def image = docker.build("${REGISTRY_URL}/${IMAGE_NAME}:${TAG_NAME}")
+                            image.push()
+                        }
                     }
                 }
             }
