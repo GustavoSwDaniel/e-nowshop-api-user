@@ -5,6 +5,7 @@ pipeline {
         REGISTRY_URL = "gcr.io/${PROJECT_ID}"
         IMAGE_NAME = 'enowsho-api-user'
         TAG_NAME = "${env.BUILD_ID}"
+        CREDENTIALS_ID = "enowhop"
     }
 
     stages {
@@ -17,12 +18,9 @@ pipeline {
         }
         stage ('Publish to GCR') {
             steps {
-                withCredentials([googleServiceAccount(credentialsId: 'container-registry', project: "${PROJECT_ID}")]) {
-                    script {
-                        docker.withRegistry("${REGISTRY_URL}", 'gcr') {
-                            def customImage = docker.build("${REGISTRY_URL}/${IMAGE_NAME}:${TAG_NAME}")
-                            customImage.push()
-                        }
+                script {
+                    docker.withRegistry([credentialsId: "gcr: [${CREDENTIALS_ID}]", url: 'https://gcr.io']) {
+                        docker.image("${REGISTRY_URL}/${IMAGE_NAME}:${TAG_NAME}").push()
                     }
                 }
             }
