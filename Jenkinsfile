@@ -17,7 +17,7 @@ pipeline {
         }
         stage ('Publish to GCR') {
             steps {
-                withCredentials([credentialsId: 'container-registry', project: "${PROJECT_ID}"]) {
+                withCredentials([[credentialsId: 'container-registry', project: "${PROJECT_ID}"]]) {
                     script {
                         docker.withRegistry("${REGISTRY_URL}", 'gcr') {
                             def customImage = docker.build("${REGISTRY_URL}/${IMAGE_NAME}:${TAG_NAME}")
