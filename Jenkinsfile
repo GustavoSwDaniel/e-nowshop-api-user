@@ -9,6 +9,14 @@ pipeline {
     }
 
     stages {
+        stage ('Load Docker') {
+            steps {
+                script {
+                    def dockerCommons = Jenkins.instance.getPlugin("docker-commons")
+                    dockerCommons.getDescriptor().getCheck().execute(new LogTaskListener(LOGGER, Level.INFO))
+                }
+            }
+        }
         stage ('Build image') {
             steps {
                 script {
