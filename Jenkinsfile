@@ -15,7 +15,6 @@ pipeline {
                 }
             }
         }
-
         stage ('Publish to GCR') {
             steps {
                 withCredentials([googleServiceAccount(credentialsId: 'container-registry', 
