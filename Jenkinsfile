@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     def dockerCommons = Jenkins.instance.getPlugin("docker-commons")
-                    dockerCommons.getDescriptor().getCheck().execute(new hudson.util.LogTaskListener(java.util.logging.Logger.getLogger("Docker"), java.util.logging.Level.INFO))
+                    dockerCommons.getDescriptor().getCheck()
                 }
             }
         }
