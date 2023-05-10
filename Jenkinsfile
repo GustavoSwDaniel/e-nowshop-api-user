@@ -6,7 +6,6 @@ pipeline {
             steps {
                 script {
                     dockerapp = docker.build("enowsho-api-user:${env.BUILD_ID}")
-
                 }
             }
         }
