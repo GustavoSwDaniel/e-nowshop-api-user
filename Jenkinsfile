@@ -5,8 +5,7 @@ pipeline {
         stage ('Build image') {
             steps {
                 script {
-                    dockerapp = docker.build("enowsho-api-user:${env.BUILD_ID}")
-                    
+                    dockerapp = docker.build("enowsho-api-user:${env.BUILD_ID}")   
                 }
             }
         }
