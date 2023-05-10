@@ -100,3 +100,21 @@ class UsersService:
         self.check_recovery_password_is_expired(recovery_code_created_at=recovery_code.created_at)
         await self.keycloak_service.change_password(email=user.email, keycloak_user_id=user.keycloak_uuid,
                                                     update_password=new_password, recovery_mode=True)
+    
+    async def create_user_address(self, keycloak_uuid: int, data: Dict):
+        user = await self.users_repo.filter_by({'keycloak_uuid': keycloak_uuid})
+        data['user_id'] = user.id
+        await self.user_address_repo.create(data)
+    
+    async def refresh_token(self, refresh_token: str, keycloak_uuid: str) -> Dict:
+        response = await self.keycloak_service.refresh_token(refresh_token=refresh_token)
+
+        user_data = await self.users_repo.get_user_info_by_keycloak_uuid(params={'keycloak_uuid': keycloak_uuid})
+
+        response['name'] = user_data.name
+        response['last_name'] = user_data.last_name
+        response['email'] = user_data.email
+        response['uuid'] = user_data.uuid
+
+
+        return response

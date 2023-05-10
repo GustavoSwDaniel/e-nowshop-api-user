@@ -1,9 +1,11 @@
 from fastapi import APIRouter, FastAPI, status, Request, Depends
 from dependency_injector.wiring import inject, Provide
 from starlette.responses import Response
+from fastapi.params import Header
+
 
 from enowshop.endpoints.dependecies import verify_jwt
-from enowshop.endpoints.users.schema import UserRegisterSchema, LoginSchema, LoginResponseSchema, UserDataSchema, \
+from enowshop.endpoints.users.schema import CreateUserAddressSchema, RefreshTokenSchema, UserRegisterSchema, LoginSchema, LoginResponseSchema, UserDataSchema, \
     UpdateUserData, UpdateUserAddressSchema, UpdateUserPhoneSchema, UpdatePasswordsSchema, EmailRecoveryPassword, \
     RecoveryPasswordsSchema
 from enowshop.endpoints.users.service import UsersService
@@ -28,9 +30,18 @@ async def login_user(request: Request, login_data: LoginSchema,
     return response
 
 
+@router.post('/user/refresh/auth', status_code=status.HTTP_200_OK, response_model=LoginResponseSchema)
+@inject
+async def refresh_token(request: Request, refresh_data: RefreshTokenSchema, user_data_auth=Depends(verify_jwt),
+                        users_service: UsersService = Depends(Provide(Container.users_services))):
+    response = await users_service.refresh_token(refresh_token=refresh_data.dict().get('refresh_token'),
+                                                 keycloak_uuid=user_data_auth.get('sub'))
+    return response
+
+
 @router.get('/user', status_code=status.HTTP_200_OK, response_model=UserDataSchema)
 @inject
-async def get_user_info(request: Request, user_data_auth=Depends(verify_jwt),
+async def get_user_info(request: Request, user_data_auth=Depends(verify_jwt), headers = Header(None),
                         users_service: UsersService = Depends(Provide(Container.users_services))):
     user_data = await users_service.get_user_info(user_data_auth.get('email'))
     return user_data
@@ -88,6 +99,13 @@ async def recovery_password(request: Request, recovery_code: str, new_password: 
     await users_service.recovery_password(recovery_code=recovery_code, new_password=new_password.dict())
     return Response(status_code=status.HTTP_200_OK)
 
+@router.post('/user/address', status_code=status.HTTP_201_CREATED)
+@inject
+async def create_user_address(request: Request, address_data: CreateUserAddressSchema,
+                              user_data_auth=Depends(verify_jwt),
+                              users_service: UsersService = Depends(Provide(Container.users_services))):
+    await users_service.create_user_address(keycloak_uuid=user_data_auth.get('sub'), data=address_data.dict())
+    return Response(status_code=status.HTTP_201_CREATED)
 
 def configure(app: FastAPI):
     app.include_router(router)

@@ -44,6 +44,16 @@ class UsersRepository(SqlRepository):
             raise RepositoryException('Email not already registered')
 
         return result
+    
+    async def get_user_info_by_keycloak_uuid(self, params) -> Users:
+        async with self.session_factory() as session:
+            result = await session.execute(select(self.model).filter_by(**params))
+            result = result.scalars().first()
+
+        if not result:
+            raise RepositoryException('Keycloak uuid not already registered')
+
+        return result
 
 
 class UserAddressRepository(SqlRepository):

@@ -182,3 +182,23 @@ class KeycloakService:
             )
             print("test")
 
+    def __build_payload_to_refresh_token(self, refresh_token: str):
+        return {
+            'grant_type': 'refresh_token',
+            'client_id': self.__client_id,
+            'refresh_token': refresh_token,
+            'client_secret': self.__client_secret
+        }
+
+    async def refresh_token(self, refresh_token: str) -> Dict:
+        async with httpx.AsyncClient(**self.__headers) as client:
+            response = await client.post(
+                f'{self.__keycloak_url}/auth/realms/{self.__realm}/protocol/openid-connect/token',
+                data=self.__build_payload_to_refresh_token(refresh_token=refresh_token)
+            )
+            if response.status_code == httpx.codes.UNAUTHORIZED:
+                raise KeyCloakException('User does not authorized')
+            if response.status_code != httpx.codes.OK:
+                raise KeyCloakException('Error during login')
+
+        return response.json()

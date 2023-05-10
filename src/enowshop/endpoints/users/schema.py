@@ -12,6 +12,9 @@ class LoginSchema(BaseModel):
     password: str
 
 
+class RefreshTokenSchema(BaseModel):
+    refresh_token: str
+
 class LoginResponseSchema(BaseModel):
     access_token: str
     expires_in: int
@@ -70,6 +73,8 @@ class AddressResponseSchema(BaseModel):
     state: State
     village: str
     complement: Union[str, None]
+    number: int
+    main: bool
 
     class Config:
         orm_mode = True
@@ -107,6 +112,15 @@ class UpdateUserAddressSchema(BaseModel):
     state: Optional[State]
     village: Optional[str]
     complement: Optional[str]
+
+class CreateUserAddressSchema(BaseModel):
+    street: str
+    cep: str
+    city: str
+    state: State
+    village: str
+    complement: str
+    numero: int
 
 
 class UpdateUserPhoneSchema(BaseModel):
