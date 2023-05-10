@@ -18,11 +18,11 @@ pipeline {
         }
         stage ('Publish to GCR') {
             steps {
-               script{
-                    withDockerRegistry([credentialsId: "${CREDENTIALS_ID}", url: "https://gcr.io"]){
-                        sh "docker push gcr.io/${PROJECT_ID}/${IMAGE_NAME}:${TAG_NAME}"
+                script {
+                    docker.withRegistry("${REGISTRY_URL}", "${CREDENTIALS_ID}") {
+                        docker.image("${REGISTRY_URL}/${IMAGE_NAME}:${TAG_NAME}").push()
                     }
-               }
+                }
             }
         }
     }
