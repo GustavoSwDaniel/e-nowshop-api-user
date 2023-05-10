@@ -16,17 +16,18 @@ pipeline {
             }
         }
 
-        stage ('Push image'){
+        stage ('Publish to GCR') {
             steps {
-                withCredentials([googleServiceAccount(credentialsId: 'container-registry', project:'enowhop')]{
+                withCredentials([googleServiceAccount(credentialsId: 'container-registry', 
+                                                     project: "${PROJECT_ID}")]) {
                     script {
-                        docker.withRegistry("${REGISTRY_URL}", 'gcr'){
-                            def image = docker.build("${REGISTRY_URL}/${IMAGE_NAME}:${TAG_NAME}")
-                            image.push()
+                        docker.withRegistry("${REGISTRY_URL}", 'gcr') {
+                            def customImage = docker.build("${REGISTRY_URL}/${IMAGE_NAME}:${TAG_NAME}")
+                            customImage.push()
                         }
                     }
                 }
-            }           
+            }
         }
     }
 }
