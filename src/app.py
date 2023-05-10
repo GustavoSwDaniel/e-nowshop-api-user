@@ -27,7 +27,6 @@ def create_app() -> False:
     app.add_exception_handler(RepositoryException, handler=generic_request_exception_handler)
     app.add_exception_handler(ExternalConnectionException, handler=generic_request_exception_handler)
     app.add_exception_handler(ExpirationRecoveryPasswordException, handler=generic_request_exception_handler)
-
     return app
 
 
