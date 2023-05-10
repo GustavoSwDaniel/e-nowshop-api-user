@@ -18,7 +18,7 @@ pipeline {
         }
         stage ('Publish to GCR') {
             steps {
-                docker.withRegistry([credentialsId: "gcr: [${CREDENTIALS_ID}]", url: 'https://gcr.io']) {
+                withRegistry([credentialsId: "gcr: [${CREDENTIALS_ID}]", url: 'https://gcr.io']) {
                     docker.image("${REGISTRY_URL}/${IMAGE_NAME}:${TAG_NAME}").push()
                 }
             }
