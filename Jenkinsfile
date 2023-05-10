@@ -5,7 +5,7 @@ pipeline {
         REGISTRY_URL = "gcr.io/${PROJECT_ID}"
         IMAGE_NAME = 'enowsho-api-user'
         TAG_NAME = "${env.BUILD_ID}"
-        CREDENTIALS_ID = "container-registry"
+        CREDENTIALS_ID = "container-registery"
     }
 
     stages {
