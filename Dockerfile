@@ -18,3 +18,4 @@ EXPOSE 8081
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt --trusted-host 44.211.201.219
 CMD [ "python", "app.py" ]
+
