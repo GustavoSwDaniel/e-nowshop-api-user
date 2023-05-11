@@ -13,7 +13,7 @@ spec:
         app: enowshop-api-user
     spec:
       containers:
-      - name: goserver
+      - name: enowshop-api-user
         image: gustavobkdev/goserver:lastest 
         ports:
         - containerPort: 9090
