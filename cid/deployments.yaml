@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: enowshop-api-user
+  name: goserver
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: enowshop-api-user
+      app: goserver
   template:
     metadata:
       labels:
-        app: enowshop-api-user
+        app: goserver
     spec:
       containers:
-      - name: enowshop-api-user
-        image: gcr.io/enowhop/enowsho-api-user:latest
+      - name: goserver
+        image: gustavobkdev/goserver:lastest 
         ports:
         - containerPort: 9090
