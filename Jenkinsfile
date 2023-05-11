@@ -8,7 +8,6 @@ pipeline {
         CREDENTIALS_ID = "enowhop"
         HOSTNAME = "gcr.io"
     }
-
     stages {
         stage ('Build image') {
             steps {
@@ -30,8 +29,8 @@ pipeline {
                 }
             }
         }
-        stege ('Deploy'){
-            steps{
+        stage ('Deploy'){
+            steps {
                 withKubeConfi([credentialsId: 'kubeconfig']){
                     sh 'kubectl apply -f ./cid/deployments.yaml'
                 }
