@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: enowshop-api-user
+  name: enowshop-api-user-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: api-user
+      app: enowshop-api-user
   template:
     metadata:
       labels:
-        app: api-user
+        app: enowshop-api-user
     spec:
       containers:
-      - name: api-user
+      - name: enowshop-api-user
         image: gcr.io/enowhop/enowshop-api-user:latest
         ports:
         - containerPort: 8080
