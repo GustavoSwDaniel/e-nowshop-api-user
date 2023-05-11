@@ -22,7 +22,7 @@ pipeline {
         }
         stage ('Publish to GCR') {
             steps {
-                withCredtials(file(credentialsId: 'enowhop2', variable: 'ENOWSHOP')){
+                withCredentials(file(credentialsId: 'enowhop2', variable: 'ENOWSHOP')){
 
                     sh '''
                         gcloud version
