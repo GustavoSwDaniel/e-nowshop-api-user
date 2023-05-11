@@ -4,7 +4,7 @@ pipeline {
         PROJECT_ID = 'enowhop'
         REGISTRY_URL = "gcr.io/${PROJECT_ID}"
         IMAGE_NAME = 'enowsho-api-user'
-        TAG_NAME = "${env.BUILD_ID}"
+        TAG_NAME = "latest"
         CREDENTIALS_ID = "enowhop"
         HOSTNAME = "gcr.io"
     }
@@ -32,7 +32,7 @@ pipeline {
         stage('Apply Kubernetes files') {
             steps {
                 withKubeConfig([credentialsId: 'kubeconfig']){
-                    sh 'kubectl apply -f ./cid/deployments.yaml'
+                    sh "kubectl set image -f ./cid/deployment.yaml enowshop-api-user=${HOSTNAME}/${PROJECT_ID}/${IMAGE_NAME}:${TAG_NAME}"
                 }
             }
         }
