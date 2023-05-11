@@ -30,5 +30,12 @@ pipeline {
                 }
             }
         }
+        stege ('Deploy'){
+            steps{
+                withKubeConfi([credentialsId: 'kubeconfig']){
+                    sh 'kubectl apply -f ./cid/deployments.yaml'
+                }
+            }
+        }
     }
 }
