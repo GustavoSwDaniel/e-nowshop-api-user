@@ -26,7 +26,7 @@ pipeline {
                         gcloud config set project $PROJECT_ID
                         gcloud auth configure-docker --quiet
                         docker push $REGISTRY_URL/$IMAGE_NAME:$TAG_NAME
-                    '''
+                    ''' 
                 }
             }
         }
