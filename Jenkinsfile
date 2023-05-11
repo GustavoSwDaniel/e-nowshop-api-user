@@ -22,11 +22,11 @@ pipeline {
         }
         stage ('Publish to GCR') {
             steps {
-                withCredentials([file(credentialsId: 'enowhop2', variable: 'ENOWSHOP')]){
-
+                withCredentials([file(credentialsId: 'enowhop2', variable: 'ENOWSHOP2')]){
                     sh '''
                         gcloud version
-                        gcloud auth activate-service-account --key-file="$ENOWSHOP"
+                        gcloud auth activate-service-account --key-file="$ENOWSHOP2"
+                        gcloud config set project $CLOUDSDK_CORE_PROJECT
                         gcloud compute zones list
                     '''
                 }
