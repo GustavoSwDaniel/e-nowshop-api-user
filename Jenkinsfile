@@ -12,6 +12,9 @@ pipeline {
         stage ('Build image') {
             steps {
                 script {
+                    sh '''
+                        gcloud version
+                    '''
                     dockerapp = docker.build("${REGISTRY_URL}/${IMAGE_NAME}:${TAG_NAME}", ".")
                 }
             }
