@@ -25,7 +25,7 @@ pipeline {
                         gcloud auth activate-service-account --key-file="$ENOWSHOP2"
                         gcloud config set project $PROJECT_ID
                         gcloud auth configure-docker 
-                        docker login
+                        echo "$ENOWSHOP2" | docker login -u _json_key --password-stdin https://gcr.io
                         docker push $REGISTRY_URL/$IMAGE_NAME:$TAG_NAME
                     '''
                 }
