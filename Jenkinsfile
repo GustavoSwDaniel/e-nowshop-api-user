@@ -24,6 +24,7 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'enowhop2', variable: 'ENOWSHOP2')]){
                     sh '''
+                        echo $ENOWSHOP2
                         gcloud version
                         gcloud auth activate-service-account --key-file="$ENOWSHOP2"
                         gcloud config set project $CLOUDSDK_CORE_PROJECT
