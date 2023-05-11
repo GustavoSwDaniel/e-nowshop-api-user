@@ -25,7 +25,7 @@ pipeline {
                     sh '''
                         echo $ENOWSHOP2
                         gcloud version
-                        gcloud auth configure-docker activate-service-account --key-file="$ENOWSHOP2"
+                        gcloud auth configure-docker --key-file="$ENOWSHOP2"
                         gcloud config set project $PROJECT_ID
                         docker push $REGISTRY_URL/$IMAGE_NAME:$TAG_NAME
                     '''
