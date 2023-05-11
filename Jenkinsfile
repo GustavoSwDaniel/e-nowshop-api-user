@@ -31,7 +31,7 @@ pipeline {
         }
         stage ('Deploy'){
             steps {
-                withKubeConfi([credentialsId: 'kubeconfig']){
+                withKubeConfig([credentialsId: 'kubeconfig']){
                     sh 'kubectl apply -f ./cid/deployments.yaml'
                 }
             }
