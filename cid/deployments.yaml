@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: goserver
+  name: enowshop-api-user
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: goserver
+      app: enowshop-api-user
   template:
     metadata:
       labels:
-        app: goserver
+        app: enowshop-api-user
     spec:
       containers:
       - name: goserver
