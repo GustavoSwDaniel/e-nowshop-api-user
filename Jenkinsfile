@@ -26,7 +26,7 @@ pipeline {
 
                     sh '''
                         gcloud version
-                        gcloud auth activate-service-account --key-file="${ENOWSHOP}"
+                        gcloud auth activate-service-account --key-file="$ENOWSHOP"
                         gcloud compute zones list
                     '''
                 }
