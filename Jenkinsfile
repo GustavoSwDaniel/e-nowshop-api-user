@@ -6,6 +6,7 @@ pipeline {
         IMAGE_NAME = 'enowsho-api-user'
         TAG_NAME = "${env.BUILD_ID}"
         CREDENTIALS_ID = "enowhop"
+        CLOUDSDK_CORE_PROJECT='enowhop'
     }
 
     stages {
@@ -21,11 +22,12 @@ pipeline {
         }
         stage ('Publish to GCR') {
             steps {
-                script {
-                    docker.withRegistry('https://gcr.io', "gcr: enowhop2") {
-                        docker.image("${REGISTRY_URL}/${IMAGE_NAME}:${TAG_NAME}").push()
-                    }
-                }
+                withCredtials(file(credentialsId: 'enowhop2', variable: 'ENOWSHOP'))
+                    sh '''
+                        gcloud version
+                        gcloud auth activate-service-account --key-file="${ENOWSHOP}
+                        gcloud compute zones list
+                    '''
             }
         }
     }
