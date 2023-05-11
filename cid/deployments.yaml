@@ -6,11 +6,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: enowshop-api-user
+      app: api-user
   template:
     metadata:
       labels:
-        app: enowshop-api-user
+        app: api-user
     spec:
       containers:
       - name: enowshop-api-user
