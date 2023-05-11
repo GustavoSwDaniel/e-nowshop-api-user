@@ -32,6 +32,7 @@ pipeline {
         stage('Apply Kubernetes files') {
             steps {
                 withKubeConfig([credentialsId: 'kubeconfig']){
+                    sg 'gcloud auth application-default login'
                     sh 'kubectl apply -f ./cid/deployments.yaml'
                 }
             }
