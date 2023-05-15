@@ -4,8 +4,8 @@ metadata:
   name: enowshop-api-user-service
 spec:
   selector:
-    app: api-user
+    app: enowshop-api-user
   ports:
   - port: 80
     targetPort: 8080
-  type: ClusterIP
+  type: NodePort
