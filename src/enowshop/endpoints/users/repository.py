@@ -16,6 +16,9 @@ class UsersRepository(SqlRepository):
 
     async def verify_email_or_cpf_already_register(self, email: str, cpf: str):
         async with self.session_factory() as session:
+            
+            print('TO DENTRO A FILHA DA PUTA')
+            print(self.model)
             result = await session.execute(
                 select(self.model).
                     where(or_(self.model.email == email, self.model.cpf == cpf))
