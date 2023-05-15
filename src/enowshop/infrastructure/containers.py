@@ -20,6 +20,20 @@ class Container(containers.DeclarativeContainer):
     users_password_code_recovery_repository = providers.Factory(UsersPasswordCodeRecoveryRepository,
                                                                 session_factory=postgres_db.provided.session)
 
+    print('client_id_admin_cli')
+    print(Config.KEYCLOAK_CLIENT_ID_ADMIN_CLI)
+    print('client_id_user')
+    print(Config.KEYCLOAK_CLIENT_ID_USERS)
+    print('client_secret_admin_cli')
+    print(Config.KEYCLOAK_CLIENT_SECRET_ADMIN_CLI)
+    print('client_secret_user')
+    print(Config.KEYCLOAK_CLIENT_SECRET_USERS)
+    print('keycloak_url')
+    print(Config.KEYCLOAK_URL)
+    print('realm')
+    print(Config.KEYCLOAK_REALMS)
+
+
     # services
     keycloak_service = providers.Factory(KeycloakService, client_id_admin_cli=Config.KEYCLOAK_CLIENT_ID_ADMIN_CLI,
                                          client_id=Config.KEYCLOAK_CLIENT_ID_USERS,
