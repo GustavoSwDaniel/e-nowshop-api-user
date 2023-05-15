@@ -27,7 +27,8 @@ class PostgresDatabase:
         try:
             yield session
         except Exception:
-            print(Exception)
+            print(session)
+            print(Exception.args)
             print('TO AQUI DENTRO O CARALHO DE ASA')
             logger.exception('Postgres Session rollback because of exception')
             await session.rollback()
