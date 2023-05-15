@@ -25,7 +25,7 @@ class UsersService:
         self.keycloak_service = keycloak_service
         self.sendgrid_client = sendgrid_client
 
-    async def test():
+    async def test(self):
         time.sleep(3)
         print('TO AQUI DENTRO O CARALHO DE ASA')
         return {'message': 'Hello World'}
