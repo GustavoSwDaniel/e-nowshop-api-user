@@ -25,6 +25,7 @@ class UsersRepository(SqlRepository):
                 select(self.model).
                     where(or_(self.model.email == email, self.model.cpf == cpf))
             )
+            print('FILHA DA PUTAAAAAAAAA')
         if result.scalars().first():
             raise RepositoryException('That email or cpf is already registered')
 

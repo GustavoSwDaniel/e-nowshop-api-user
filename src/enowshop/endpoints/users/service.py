@@ -1,6 +1,7 @@
 import random
 import string
 from datetime import datetime, timedelta
+import time
 from typing import Dict
 
 from enowshop.domain.keycloak.keycloak import KeycloakService
@@ -23,6 +24,11 @@ class UsersService:
         self.users_password_code_repo = users_password_code_recovery_repository
         self.keycloak_service = keycloak_service
         self.sendgrid_client = sendgrid_client
+
+    async def test():
+        time.sleep(3)
+        print('TO AQUI DENTRO O CARALHO DE ASA')
+        return {'message': 'Hello World'}
 
     async def check_if_email_or_cpf_already_registered(self, email: str, cpf: str):
         await self.users_repo.verify_email_or_cpf_already_register(email=email, cpf=cpf)
