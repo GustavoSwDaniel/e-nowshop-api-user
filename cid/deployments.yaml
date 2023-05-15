@@ -14,11 +14,11 @@ spec:
     spec:
       containers:
         - name: enowshop-api-user
-          image: gcr.io/enowhop/enowshop-api-user:100
+          image: gcr.io/enowhop/enowshop-api-user:101
           ports:
               - containerPort: 8080
           env:
-            - name: A-DATABASE_URL
+            - name: A-POSTGRES_DATABASE_URL
               valueFrom:
                 secretKeyRef:
                   name: api-user-secrets
