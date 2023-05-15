@@ -13,6 +13,7 @@ Base = declarative_base()
 
 class PostgresDatabase:
     def __init__(self, database_url: str) -> None:
+        print(database_url)
         self.__engine = create_async_engine(database_url, echo=False, pool_size=5, max_overflow=10)
         self.__session_factory = async_scoped_session(orm.sessionmaker(self.__engine, expire_on_commit=False,
                                                                        class_=AsyncSession), scopefunc=current_task)
