@@ -19,6 +19,8 @@ class UsersRepository(SqlRepository):
             
             print('TO DENTRO A FILHA DA PUTA')
             print(self.model)
+            print(email)
+            print(cpf)
             result = await session.execute(
                 select(self.model).
                     where(or_(self.model.email == email, self.model.cpf == cpf))
