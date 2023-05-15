@@ -4,8 +4,7 @@ import os
 class Config:
     BROKER_URL = os.getenv('BROKER_URL', 'localhost:9092')
 
-    DATABASE_URL = os.getenv(
-        'A-POSTGRES_DATABASE_URL', 'postgresql+asyncpg://enowshop:enowshop@127.0.0.1:5432/enowshop')
+    DATABASE_URL = os.getenv('A-POSTGRES_DATABASE_URL')
 
     KEYCLOAK_URL = os.getenv('KEYCLOAK_URL', 'http://localhost:8080')
     KEYCLOAK_REALMS = os.getenv('KEYCLOAK_REALMS', 'users')
