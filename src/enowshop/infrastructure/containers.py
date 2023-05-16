@@ -38,6 +38,9 @@ class Container(containers.DeclarativeContainer):
     print('realm')
     print(Config.KEYCLOAK_REALMS)
 
+    print('public_key')
+    print(Config.KEYCLOAK_PUBLIC_KEY)
+
 
     # services
     keycloak_service = providers.Factory(KeycloakService, client_id_admin_cli=Config.KEYCLOAK_CLIENT_ID_ADMIN_CLI,
