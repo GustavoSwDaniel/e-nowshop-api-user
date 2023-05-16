@@ -18,6 +18,7 @@ def format_struct_key(jwt_token: str):
 
 
 async def verify_jwt(authorization: str = Header()):
+    print(authorization)
     jwt_token = authorization.split(" ", 1)[1]
     options = {"verify_signature": True, "verify_aud": False, "exp": True}
 

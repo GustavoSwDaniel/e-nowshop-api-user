@@ -43,11 +43,11 @@ spec:
                 secretKeyRef:
                   name: api-user-secrets
                   key: KEYCLOAK_CLIENT_SECRET_USERS
-            - name: KEYCLOAK_CLIENT_SECRET_USER_ADMIN_CLI
+            - name: KEYCLOAK_CLIENT_SECRET_ADMIN_CLI
               valueFrom:
                 secretKeyRef:
                   name: api-user-secrets
-                  key: KEYCLOAK_CLIENT_SECRET_USER_ADMIN_CLI
+                  key: KEYCLOAK_CLIENT_SECRET_ADMIN_CLI
             - name: KEYCLOAK_PUBLIC_KEY
               valueFrom:
                 secretKeyRef:
