@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: enowshop-api-user
-          image: gcr.io/enowhop/enowshop-api-user:112
+          image: gcr.io/enowhop/enowshop-api-user:114
           ports:
               - containerPort: 8080
           env:
@@ -48,7 +48,7 @@ spec:
                 secretKeyRef:
                   name: api-user-secrets
                   key: KEYCLOAK_CLIENT_SECRET_ADMIN_CLI
-            - name: KEYCLOAK_PUBLIC_KEY
+            - name: PUBLIC_KEY
               valueFrom:
                 secretKeyRef:
                   name: api-user-secrets

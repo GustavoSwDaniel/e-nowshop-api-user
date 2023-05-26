@@ -20,26 +20,7 @@ class Container(containers.DeclarativeContainer):
     users_password_code_recovery_repository = providers.Factory(UsersPasswordCodeRecoveryRepository,
                                                                 session_factory=postgres_db.provided.session)
 
-    print('client_id_admin_cli')
-    print(Config.KEYCLOAK_CLIENT_ID_ADMIN_CLI)
 
-    print('client_id_user')
-    print(Config.KEYCLOAK_CLIENT_ID_USERS)
-    
-    print('client_secret_admin_cli')
-    print(Config.KEYCLOAK_CLIENT_SECRET_ADMIN_CLI)
-    
-    print('client_secret_user')
-    print(Config.KEYCLOAK_CLIENT_SECRET_USERS)
-    
-    print('keycloak_url')
-    print(Config.KEYCLOAK_URL)
-    
-    print('realm')
-    print(Config.KEYCLOAK_REALMS)
-
-    print('public_key')
-    print(Config.KEYCLOAK_PUBLIC_KEY)
 
 
     # services
@@ -49,7 +30,7 @@ class Container(containers.DeclarativeContainer):
                                          client_secret=Config.KEYCLOAK_CLIENT_SECRET_USERS,
                                          keycloak_url=Config.KEYCLOAK_URL, realm=Config.KEYCLOAK_REALMS)
     sendgrid_client = SendGridClient(sendgrid_url=Config.SENDGRID_URL, sendgrid_api_key=Config.SENDGRID_API_KEY,
-                                     origin_email=Config.SENDGRID_ORiGIN_EMAIL)
+                                     origin_email=Config.SENDGRID_ORiGIN_EMAIL, link_frontend=Config.FRONT_END_LINK)
     users_services = providers.Factory(UsersService, users_repository=user_repository,
                                        users_address_repository=user_address_repository,
                                        users_phones_repository=user_phones_repository,
