@@ -14,7 +14,7 @@ class Config:
     KEYCLOAK_CLIENT_SECRET_USERS = str(os.getenv('KEYCLOAK_CLIENT_SECRET_USERS'))
     KEYCLOAK_CLIENT_ID_USERS = os.getenv('KEYCLOAK_CLIENT_ID_USERS', 'users')
 
-    SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY', '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')
+    SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
     SENDGRID_URL = os.getenv('SENDGRID_URL', 'https://api.sendgrid.com/v3/mail/send')
     SENDGRID_ORiGIN_EMAIL = os.getenv('SENDGRID_ORiGIN_EMAIL', 'verificacaoenowshop@e-nowshop.com.br')
     FRONT_END_LINK = os.getenv('FRONT_END_LINK', 'http://localhost:3000')

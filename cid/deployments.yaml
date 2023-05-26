@@ -53,3 +53,8 @@ spec:
                 secretKeyRef:
                   name: api-user-secrets
                   key: PUBLIC_KEY
+            - name: SENDGRID_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api-user-secrets
+                  key: SENDGRID_API_KEY
