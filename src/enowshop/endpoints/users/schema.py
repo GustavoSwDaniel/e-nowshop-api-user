@@ -120,7 +120,7 @@ class CreateUserAddressSchema(BaseModel):
     state: State
     village: str
     complement: str
-    numero: int
+    number: int
 
 
 class UpdateUserPhoneSchema(BaseModel):
