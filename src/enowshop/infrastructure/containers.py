@@ -21,8 +21,6 @@ class Container(containers.DeclarativeContainer):
                                                                 session_factory=postgres_db.provided.session)
 
 
-
-
     # services
     keycloak_service = providers.Factory(KeycloakService, client_id_admin_cli=Config.KEYCLOAK_CLIENT_ID_ADMIN_CLI,
                                          client_id=Config.KEYCLOAK_CLIENT_ID_USERS,
@@ -36,4 +34,4 @@ class Container(containers.DeclarativeContainer):
                                        users_phones_repository=user_phones_repository,
                                        keycloak_service=keycloak_service,
                                        users_password_code_recovery_repository=users_password_code_recovery_repository,
-                                       sendgrid_client=sendgrid_client)
+                                       sendgrid_client=sendgrid_client, order_url=Config.ORDER_URL)

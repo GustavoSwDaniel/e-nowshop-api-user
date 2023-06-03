@@ -58,3 +58,8 @@ spec:
                 secretKeyRef:
                   name: api-user-secrets
                   key: SENDGRID_API_KEY
+            - name: ORDER_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: api-user-secrets
+                    key: ORDER_URL

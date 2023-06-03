@@ -11,24 +11,21 @@ from enowshop.endpoints.users.repository import UsersRepository, UserAddressRepo
 from enowshop.endpoints.users.schema import LoginSchema
 from enowshop_models.models.users import Users
 from exception import ExternalConnectionException, ExpirationRecoveryPasswordException
+import httpx
 
 
 class UsersService:
     def __init__(self, users_repository: UsersRepository, users_address_repository: UserAddressRepository,
                  users_phones_repository: UsersPhonesRepository, keycloak_service: KeycloakService,
                  users_password_code_recovery_repository: UsersPasswordCodeRecoveryRepository,
-                 sendgrid_client: SendGridClient):
+                 sendgrid_client: SendGridClient, order_url: str):
         self.users_repo = users_repository
         self.user_address_repo = users_address_repository
         self.users_phones_repo = users_phones_repository
         self.users_password_code_repo = users_password_code_recovery_repository
         self.keycloak_service = keycloak_service
         self.sendgrid_client = sendgrid_client
-
-    async def test(self):
-        time.sleep(3)
-        print('TO AQUI DENTRO O CARALHO DE ASA')
-        return {'message': 'Hello World'}
+        self.order_url = order_url
 
     async def check_if_email_or_cpf_already_registered(self, email: str, cpf: str):
         await self.users_repo.verify_email_or_cpf_already_register(email=email, cpf=cpf)
@@ -47,6 +44,9 @@ class UsersService:
 
         keycloak_uuid = await self.keycloak_service.create_user_by_admin_cli(data=user_data, password=password,
                                                                              user_id=user.id)
+        
+        async with httpx.AsyncClient() as client:
+            await client.post(f'{self.order_url}/car/{user.uuid}')
 
         await self.users_repo.update(pk=user.id, values={'keycloak_uuid': keycloak_uuid})
 

@@ -18,3 +18,5 @@ class Config:
     SENDGRID_URL = os.getenv('SENDGRID_URL', 'https://api.sendgrid.com/v3/mail/send')
     SENDGRID_ORiGIN_EMAIL = os.getenv('SENDGRID_ORiGIN_EMAIL', 'verificacaoenowshop@e-nowshop.com.br')
     FRONT_END_LINK = os.getenv('FRONT_END_LINK', 'http://localhost:3000')
+
+    ORDER_URL = os.getenv('ORDER_URL', 'http://localhost:8000')

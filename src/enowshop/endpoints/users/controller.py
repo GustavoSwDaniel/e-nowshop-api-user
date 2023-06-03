@@ -14,13 +14,6 @@ from enowshop.infrastructure.containers import Container
 router = APIRouter()
 
 
-@router.get('/test', status_code=status.HTTP_200_OK)
-@inject
-async def test(request: Request, users_service: UsersService = Depends(Provide(Container.users_services))):
-    response = await users_service.test()
-    return  response
-
-
 @router.post('/users', status_code=status.HTTP_201_CREATED)
 @inject
 async def register_user(request: Request, register_user_data: UserRegisterSchema,
