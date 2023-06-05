@@ -46,6 +46,7 @@ class UsersService:
                                                                              user_id=user.id)
         
         async with httpx.AsyncClient() as client:
+            print(f'{self.order_url}/car/{user.uuid}')
             await client.post(f'{self.order_url}/car/{user.uuid}')
 
         await self.users_repo.update(pk=user.id, values={'keycloak_uuid': keycloak_uuid})
