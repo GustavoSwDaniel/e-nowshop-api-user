@@ -9,12 +9,16 @@ spec:
       app: enowshop-api-user
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "8081"
       labels:
         app: enowshop-api-user
     spec:
       containers:
         - name: enowshop-api-user
-          image: gcr.io/enowhop/enowshop-api-user:114
+          image: gcr.io/enowhop/enowshop-api-user:122
           ports:
               - containerPort: 8080
           env:
