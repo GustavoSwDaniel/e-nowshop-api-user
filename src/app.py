@@ -22,6 +22,8 @@ def create_app() -> False:
     app.add_middleware(CORSMiddleware, PrometheusMiddleware, allow_origins=['*'], allow_credentials=True, allow_methods=['*'],
                        allow_headers=['*'])
     app.add_api_route('/metrics', metrics)
+
+
     app.add_exception_handler(ValidationException, handler=generic_request_exception_handler)
     app.add_exception_handler(KeyCloakException, handler=generic_request_exception_handler)
     app.add_exception_handler(HTTPStatusError, handler=generic_request_exception_handler)
