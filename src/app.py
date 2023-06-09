@@ -6,6 +6,7 @@ from httpx import HTTPStatusError
 from enowshop.middlewares.exception_handler import generic_request_exception_handler
 from exception import ValidationException, KeyCloakException, RepositoryException, ExternalConnectionException, \
     ExpirationRecoveryPasswordException
+from starlette_prometheus import metrics, PrometheusMiddleware
 
 
 def create_app() -> False:
@@ -18,9 +19,9 @@ def create_app() -> False:
 
     container.wire(modules=[users_module])
 
-    app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_credentials=True, allow_methods=['*'],
+    app.add_middleware(CORSMiddleware, PrometheusMiddleware, allow_origins=['*'], allow_credentials=True, allow_methods=['*'],
                        allow_headers=['*'])
-
+    app.add_api_route('/metrics', metrics)
     app.add_exception_handler(ValidationException, handler=generic_request_exception_handler)
     app.add_exception_handler(KeyCloakException, handler=generic_request_exception_handler)
     app.add_exception_handler(HTTPStatusError, handler=generic_request_exception_handler)

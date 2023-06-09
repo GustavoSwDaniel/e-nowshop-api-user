@@ -12,13 +12,13 @@ spec:
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/path: /metrics
-        prometheus.io/port: "8081"
+        prometheus.io/port: "8080"
       labels:
         app: enowshop-api-user
     spec:
       containers:
         - name: enowshop-api-user
-          image: gcr.io/enowhop/enowshop-api-user:122
+          image: gcr.io/enowhop/enowshop-api-user:123
           ports:
               - containerPort: 8080
           env:
