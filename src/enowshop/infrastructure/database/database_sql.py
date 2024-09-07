@@ -23,12 +23,10 @@ class PostgresDatabase:
     @asynccontextmanager
     async def session(self) -> AsyncSession:
         session: AsyncSession = self.__session_factory()
-        print('TO AQUI DENTRO O CARALHO DE ASA')
         try:
             yield session
         except Exception:
             print(session)
-            print('TO AQUI DENTRO O CARALHO DE ASA')
             logger.exception('Postgres Session rollback because of exception')
             await session.rollback()
             raise

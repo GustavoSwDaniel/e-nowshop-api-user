@@ -4,7 +4,7 @@ import os
 class Config:
     BROKER_URL = os.getenv('BROKER_URL', 'localhost:9092')
 
-    DATABASE_URL = os.getenv('A-POSTGRES_DATABASE_URL')
+    DATABASE_URL = os.getenv('A-POSTGRES_DATABASE_URL', 'postgresql+asyncpg://postgres:t8ltavvRLd@127.0.0.1:5432/postgres')
 
     KEYCLOAK_URL = os.getenv('KEYCLOAK_URL', 'http://localhost:8080')
     KEYCLOAK_REALMS = os.getenv('KEYCLOAK_REALMS', 'users')
@@ -20,3 +20,34 @@ class Config:
     FRONT_END_LINK = os.getenv('FRONT_END_LINK', 'http://localhost:3000')
 
     ORDER_URL = os.getenv('ORDER_URL', 'http://localhost:8000')
+
+    URL_CORREIOS = os.getenv('URL_CORREIOS', 'http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx?WSDL')
+
+    KEYCLOAK_PUBLIC_KEY = os.getenv('KEYCLOAK_PUBLIC_KEY')
+
+    ORIGIN_CEP = os.getenv('ORIGIN_CEP', '01153000')
+    
+    PUBNUB_SUBSCRIBE_KEY = os.getenv('PUBNUB_SUBSCRIBE_KEY', 'sub-c-47cab205-d6cf-4e9f-91a7-bbb42cc8544c')
+    PUBNUB_PUBLISH_KEY = os.getenv('PUBNUB_PUBLISH_KEY', 'pub-c-b572a862-efaa-4b28-9462-82d0cb72a57c')
+
+    S3_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME', 'enowshopv2')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '')
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'AKIAZQ3DODJEZKCRLT7G')
+    AWS_REGION_NAME = os.environ.get('AWS_REGION_NAME', 'us-east-1')
+
+      
+    MONGO_DATABASE_DB = os.getenv('MONGO_DATABASE_DB', 'enowshop')
+    MONGO_DATABASE_HOST = os.getenv('MONGO_DATABASE_HOST', 'localhost')
+    MONGO_DATABASE_PORT = int(os.getenv('MONGO_DATABASE_PORT', 27017))
+    MONGO_DATABASE_USER = os.getenv('MONGO_DATABASE_USER', 'enowshop')
+    MONGO_DATABASE_PASSWORD = os.getenv('MONGO_DATABASE_PASSWORD', 'enowshop')
+    MONGO_DATABASE_AUTH_SOURCE = os.getenv('MONGO_DATABASE_AUTH_SOURCE', 'admin')
+    PAYMENT_ACCESS = {
+        'PIX': 'APP_USR-8323930387031655-011018-9d10499319c25087b0d176c30307a38b-273630370'
+    }
+    URL_CORREIOS = os.getenv('URL_CORREIOS', 'http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx?WSDL')
+
+    MELHOR_ENVIO_TOKEN = os.getenv('MELHOR_ENVIO_TOKEN', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5NTYiLCJqdGkiOiIwNzEyZTI4MzZmMjk5NWRiNjI2YmU1ZGI4OTM1YTg4YWI5ZjE2NGMzMGQzOGM2NzVlOTM3N2JiOGRhNTMzNWMzNWU0MDBjZjliNDg5ZjdhZCIsImlhdCI6MTcxMDIwMzgzOS4wOTYxOTUsIm5iZiI6MTcxMDIwMzgzOS4wOTYxOTksImV4cCI6MTc0MTczOTgzOS4wODY1NTMsInN1YiI6IjliOGFhYTRlLTc0ZGItNDJiNy1hN2FmLWU2YmM1Mjg5NWE2OCIsInNjb3BlcyI6WyJjYXJ0LXJlYWQiLCJjYXJ0LXdyaXRlIiwiY29tcGFuaWVzLXJlYWQiLCJjb21wYW5pZXMtd3JpdGUiLCJjb3Vwb25zLXJlYWQiLCJjb3Vwb25zLXdyaXRlIiwibm90aWZpY2F0aW9ucy1yZWFkIiwib3JkZXJzLXJlYWQiLCJwcm9kdWN0cy1yZWFkIiwicHJvZHVjdHMtZGVzdHJveSIsInByb2R1Y3RzLXdyaXRlIiwicHVyY2hhc2VzLXJlYWQiLCJzaGlwcGluZy1jYWxjdWxhdGUiLCJzaGlwcGluZy1jYW5jZWwiLCJzaGlwcGluZy1jaGVja291dCIsInNoaXBwaW5nLWNvbXBhbmllcyIsInNoaXBwaW5nLWdlbmVyYXRlIiwic2hpcHBpbmctcHJldmlldyIsInNoaXBwaW5nLXByaW50Iiwic2hpcHBpbmctc2hhcmUiLCJzaGlwcGluZy10cmFja2luZyIsImVjb21tZXJjZS1zaGlwcGluZyIsInRyYW5zYWN0aW9ucy1yZWFkIiwidXNlcnMtcmVhZCIsInVzZXJzLXdyaXRlIiwid2ViaG9va3MtcmVhZCIsIndlYmhvb2tzLXdyaXRlIiwid2ViaG9va3MtZGVsZXRlIiwidGRlYWxlci13ZWJob29rIl19.CBd0wj0hjW4bNc640H8T016LnO0j6y9rDYRRUBTSUlKUq5xQKptgWRiKx5K5pj24Wd2quCBs2iHtiRYrMVuhBZ9xsEworNyVxNLTVdBFgBjsqEzStrdYVGUawbm4jw1sMbGqOwS5Dcf8QSjPuNhUXNoiGsBKxn0uTb1_uWmX7kZAGP3NxH6ujgVqw28p-0JyUJlvcNUKW7MBrM5eZpBEvwc8lI-1chuRlAlE0UE_2oud05DjEZteJZpqMxViSY7JODHHfAtOVhAgsDYHRcwIKuSMYII7Jy31n4v6sV7dhOxrmtsZKzzH-IxxjU3aAsdGln24FOJbwVrad8W2GSTIOA_qmmPVFJEjaFIv5UNiUjwPxphBoseoC-0jh6FGxszY7nO-Q0cBN-0JnwXTPMqyc7CCuDoM7w1_JiScz-fixyfvgtt60nag5Xe7z8uhXeKexAVMn9f9Q0WuU0vMr4lgWOmWU2FhflxYzMJg9bP7V3Bgw3_0KufWf065KuKRcMdv81lAtP0iMIU3fi96kH2XqcxM485DzYBEM2tNCPNGEUS1rprwN7AOWcT5chD42oLSsMoI3UoXrD_gJftyjNUIpwrZBVSHwrDwPMdvGwdNf0CbCKqsN_qNSt6UOtM81tyUdnyUL6ffxDaOVfoJAvPAErrHsD8PDX5V18Z5CpyCd78')
+    MELHOR_ENVIO_ORIGIN_CEP = os.getenv('MELHOR_ENVIO_ORIGIN_CEP', '01021200')
+    ASAAS_ACCESS_TOKEN = os.getenv('ASAAS_ACCESS', '$aact_YTU5YTE0M2M2N2I4MTliNzk0YTI5N2U5MzdjNWZmNDQ6OjAwMDAwMDAwMDAwMDAwODE0NjQ6OiRhYWNoXzBmMmFkZmU0LTc3NzAtNDcyYS04YjAzLTAxMDdiMjc4YjE5NQ==')
+    ASAAS_URL = os.getenv('ASAAS_URL', 'https://sandbox.asaas.com')

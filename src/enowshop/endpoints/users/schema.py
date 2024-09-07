@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Union, List, Dict, Optional
 
-from enowshop_models.models.users_address import State
+from enowshop.infrastructure.models.models.users_address import State
 from pycpfcnpj import cpfcnpj
 from pydantic import BaseModel, validator, Field
 
@@ -17,9 +17,6 @@ class RefreshTokenSchema(BaseModel):
 
 class LoginResponseSchema(BaseModel):
     access_token: str
-    expires_in: int
-    refresh_token: str
-    refresh_expires_in: str
     name: str
     last_name: str
     email: str
@@ -37,6 +34,7 @@ class AddressSchema(BaseModel):
     city: str
     state: str
     village: str
+    number: int
     complement: Union[str, None]
 
 

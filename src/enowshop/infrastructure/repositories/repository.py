@@ -19,7 +19,7 @@ class SqlRepository(IRepository):
     async def filter_all_by(self, params):
         async with self.session_factory() as session:
             result = await session.execute(select(self.model).filter_by(**params))
-            return result.scalars()
+            return result.scalars().all()
 
     async def create(self, values):
         async with self.session_factory() as session:

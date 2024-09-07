@@ -1,39 +1,55 @@
+import crypt
 import random
 import string
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import time
-from typing import Dict
+from typing import Dict, Union
+import bcrypt
+
+from jose import JWTError, jwt
 
 from enowshop.domain.keycloak.keycloak import KeycloakService
 from enowshop.domain.sendgrid.client_sendgrid import SendGridClient
 from enowshop.endpoints.users.repository import UsersRepository, UserAddressRepository, UsersPhonesRepository, \
     UsersPasswordCodeRecoveryRepository
 from enowshop.endpoints.users.schema import LoginSchema
-from enowshop_models.models.users import Users
+from enowshop.infrastructure.models.models.users import Users
 from exception import ExternalConnectionException, ExpirationRecoveryPasswordException
 import httpx
+import re
+
+from enowshop.endpoints.cars.repository import CarsRepository
 
 
 class UsersService:
     def __init__(self, users_repository: UsersRepository, users_address_repository: UserAddressRepository,
-                 users_phones_repository: UsersPhonesRepository, keycloak_service: KeycloakService,
-                 users_password_code_recovery_repository: UsersPasswordCodeRecoveryRepository,
+                 users_phones_repository: UsersPhonesRepository,
+                 users_password_code_recovery_repository: UsersPasswordCodeRecoveryRepository, cart_repository: CarsRepository,
                  sendgrid_client: SendGridClient, order_url: str):
         self.users_repo = users_repository
         self.user_address_repo = users_address_repository
         self.users_phones_repo = users_phones_repository
         self.users_password_code_repo = users_password_code_recovery_repository
-        self.keycloak_service = keycloak_service
+        self.cart_repositoy = cart_repository
         self.sendgrid_client = sendgrid_client
         self.order_url = order_url
 
     async def check_if_email_or_cpf_already_registered(self, email: str, cpf: str):
         await self.users_repo.verify_email_or_cpf_already_register(email=email, cpf=cpf)
 
+    def create_access_token(self, data: dict):
+        to_encode = data.copy()
+        expire = datetime.now(timezone.utc) + timedelta(minutes=30)
+        to_encode.update({"exp": expire})
+        encoded_jwt = jwt.encode(to_encode, '09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7', algorithm='HS256')
+        return encoded_jwt
+
     async def register_user(self, user_data: Dict):
         await self.check_if_email_or_cpf_already_registered(email=user_data.get('email'), cpf=user_data.get('cpf'))
 
-        password = user_data.pop('password')
+        user_data['cpf'] = re.sub(r'[.-]', '', user_data['cpf'])
+
+        user_data['password'] = bcrypt.hashpw(user_data.pop('password').encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         address = user_data.pop('address')
         phones = user_data.pop('phones')
         user = await self.users_repo.create(user_data)
@@ -42,25 +58,23 @@ class UsersService:
         await self.users_phones_repo.create_phones_with_bulk_operator(phones)
         await self.user_address_repo.create(address)
 
-        keycloak_uuid = await self.keycloak_service.create_user_by_admin_cli(data=user_data, password=password,
-                                                                             user_id=user.id)
-        
-        async with httpx.AsyncClient() as client:
-            print(f'{self.order_url}/car/{user.uuid}')
-            await client.post(f'{self.order_url}/car/{user.uuid}')
-
-        await self.users_repo.update(pk=user.id, values={'keycloak_uuid': keycloak_uuid})
-
     async def login(self, login_data: LoginSchema) -> Dict:
-        response = await self.keycloak_service.auth_user(username=login_data.username,
-                                                         password=login_data.password)
+        
+        response = {}
 
         user_data = await self.users_repo.get_user_info_by_email(params={'email': login_data.username})
+        if not user_data:
+            raise Exception('User not found')
+        
+        if not bcrypt.checkpw(login_data.password.encode('utf-8'), user_data.password.encode('utf-8')):
+            raise Exception('Error')
 
         response['name'] = user_data.name
         response['last_name'] = user_data.last_name
         response['email'] = user_data.email
         response['uuid'] = user_data.uuid
+        
+        response['access_token'] = self.create_access_token(data=response)
 
         return response
 
@@ -70,10 +84,10 @@ class UsersService:
 
     async def update_user_data(self, uuid_user_auth: str, email: str, data_update: Dict) -> None:
         await self.users_repo.update_by_email(email=email, values=data_update)
-        await self.keycloak_service.update_user_data(uuid_user=uuid_user_auth, update_data=data_update)
 
-    async def update_user_address(self, address_id: int, user_ind: int, data_update: Dict) -> None:
-        await self.user_address_repo.update_by_id_and_user_id(pk=address_id, user_id=user_ind, values=data_update)
+    async def update_user_address(self, address_id: int, user_uuid: int, data_update: Dict) -> None:
+        user = await self.users_repo.filter_by({'uuid': user_uuid})
+        await self.user_address_repo.update_by_id_and_user_id(pk=address_id, user_id=user.id, values=data_update)
 
     async def update_user_phone(self, phone_id: int, user_ind: int, data_update: Dict) -> None:
         await self.users_phones_repo.update_by_id_and_user_id(pk=phone_id, user_id=user_ind, values=data_update)
@@ -105,23 +119,17 @@ class UsersService:
         user = await self.users_repo.filter_by({'id': recovery_code.user_id})
 
         self.check_recovery_password_is_expired(recovery_code_created_at=recovery_code.created_at)
-        await self.keycloak_service.change_password(email=user.email, keycloak_user_id=user.keycloak_uuid,
-                                                    update_password=new_password, recovery_mode=True)
-    
+        password = bcrypt.hashpw(new_password['new_password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        await self.users_repo.update(pk=user.id, values={'password': password})
+
+
     async def create_user_address(self, keycloak_uuid: int, data: Dict):
         user = await self.users_repo.filter_by({'keycloak_uuid': keycloak_uuid})
         data['user_id'] = user.id
         await self.user_address_repo.create(data)
     
     async def refresh_token(self, refresh_token: str, keycloak_uuid: str) -> Dict:
-        response = await self.keycloak_service.refresh_token(refresh_token=refresh_token)
-
-        user_data = await self.users_repo.get_user_info_by_keycloak_uuid(params={'keycloak_uuid': keycloak_uuid})
-
-        response['name'] = user_data.name
-        response['last_name'] = user_data.last_name
-        response['email'] = user_data.email
-        response['uuid'] = user_data.uuid
+        
 
 
-        return response
+        return {"ref": "ref"}
